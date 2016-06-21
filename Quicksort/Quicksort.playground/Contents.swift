@@ -6,20 +6,18 @@ import Foundation
 // *** Simple but inefficient version of quicksort ***
 
 func quicksort<T: Comparable>(a: [T]) -> [T] {
-  if a.count <= 1 {
-    return a
-  } else {
-    let pivot = a[a.count/2]
-    let less = a.filter { $0 < pivot }
-    let equal = a.filter { $0 == pivot }
-    let greater = a.filter { $0 > pivot }
-    
-    // Uncomment this following line to see in detail what the 
-    // pivot is in each step and how the subarrays are partitioned.
-    //print(pivot, less, equal, greater)
-    
-    return quicksort(less) + equal + quicksort(greater)
-  }
+  guard a.count > 1 else { return a }
+
+  let pivot = a[a.count/2]
+  let less = a.filter { $0 < pivot }
+  let equal = a.filter { $0 == pivot }
+  let greater = a.filter { $0 > pivot }
+
+  // Uncomment this following line to see in detail what the
+  // pivot is in each step and how the subarrays are partitioned.
+  //print(pivot, less, equal, greater)  return quicksort(less) + equal + quicksort(greater)
+
+  return quicksort(less) + equal + quicksort(greater)
 }
 
 let list1 = [ 10, 0, 3, 9, 2, 14, 8, 27, 1, 5, 8, -1, 26 ]
@@ -38,7 +36,7 @@ quicksort(list1)
 */
 func partitionLomuto<T: Comparable>(inout a: [T], low: Int, high: Int) -> Int {
   let pivot = a[high]
-  
+
   var i = low
   for j in low..<high {
     if a[j] <= pivot {
@@ -46,7 +44,7 @@ func partitionLomuto<T: Comparable>(inout a: [T], low: Int, high: Int) -> Int {
       i += 1
     }
   }
-  
+
   (a[i], a[high]) = (a[high], a[i])
   return i
 }
@@ -81,11 +79,11 @@ func partitionHoare<T: Comparable>(inout a: [T], low: Int, high: Int) -> Int {
   let pivot = a[low]
   var i = low - 1
   var j = high + 1
-  
+
   while true {
     repeat { j -= 1 } while a[j] > pivot
     repeat { i += 1 } while a[i] < pivot
-    
+
     if i < j {
       swap(&a[i], &a[j])
     } else {
@@ -122,7 +120,7 @@ func quicksortRandom<T: Comparable>(inout a: [T], low: Int, high: Int) {
   if low < high {
     let pivotIndex = random(min: low, max: high)
     (a[pivotIndex], a[high]) = (a[high], a[pivotIndex])
-    
+
     let p = partitionLomuto(&a, low: low, high: high)
     quicksortRandom(&a, low: low, high: p - 1)
     quicksortRandom(&a, low: p + 1, high: high)
@@ -153,11 +151,11 @@ public func swap<T>(inout a: [T], _ i: Int, _ j: Int) {
 */
 func partitionDutchFlag<T: Comparable>(inout a: [T], low: Int, high: Int, pivotIndex: Int) -> (Int, Int) {
   let pivot = a[pivotIndex]
-  
+
   var smaller = low
   var equal = low
   var larger = high
-  
+
   while equal <= larger {
     if a[equal] < pivot {
       swap(&a, smaller, equal)
