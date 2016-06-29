@@ -39,7 +39,7 @@ public struct Stack<T> {
 var stackOfNames = Stack(array: ["Carl", "Lisa", "Stephanie", "Jeff", "Wade"])
 
 // Add an element to the top of the stack.
-stackOfNames.push("Mike")
+stackOfNames.push(element: "Mike")
 
 // The stack is now ["Carl", "Lisa", "Stephanie", "Jeff", "Wade", "Mike"]
 print(stackOfNames.array)
